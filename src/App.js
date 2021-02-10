@@ -22,6 +22,7 @@ class App extends React.Component {
       .then(res => res.json())
       .then(res => res.item)
     try {
+      // エラー処理（検索結果がない場合）
       console.log(data.item)
       this.setState({ data: data })
     } catch {
@@ -29,8 +30,9 @@ class App extends React.Component {
     }
   }
 
+  // 表示
   render () {
-    console.log(this.state.keyword)
+    console.log(this.state.url)
     return (
       <>
         <div>
@@ -43,22 +45,24 @@ class App extends React.Component {
     )
   }
 
+  // 検索ボタンをクリックしたときの処理
   handleText (event) {
     const key = '&keyword=' + event.target.value
     this.setState({ url: this.url + key, keyword: event.target.value })
   }
 
+  // 検索ボタンの処理
   handleSubmit () {
-    const key = '&keyword=' + this.state.keyword
-
     this.componentDidMount()
   }
 }
 
+// 入力するフォームの処理
 const SearchTextInput = props => {
   return <input type='text' onChange={props.onChange} />
 }
 
+// 検索ボタン表示の処理
 const SearchSubmit = props => {
   return (
     <Button
@@ -72,6 +76,7 @@ const SearchSubmit = props => {
   )
 }
 
+// 画像と画像クリックでリンクに飛ぶ処理
 const ViewImages = props => {
   return (
     <>
