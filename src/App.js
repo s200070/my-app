@@ -1,5 +1,6 @@
 import React from 'react'
 import JsonP from 'fetch-jsonp'
+import { Button } from '@material-ui/core'
 
 class App extends React.Component {
   constructor (props) {
@@ -7,7 +8,7 @@ class App extends React.Component {
     this.url = 'https://www.sysbird.jp/webapi/?format=jsonp&apikey=guest&max=30'
     this.state = {
       url:
-        'https://www.sysbird.jp/webapi/?format=jsonp&apikey=guest&max=30&keyword=ポテチ',
+        'https://www.sysbird.jp/webapi/?format=jsonp&apikey=guest&max=30&keyword=お菓子',
       data: [{ image: null }]
     }
   }
@@ -29,11 +30,14 @@ class App extends React.Component {
   }
 
   render () {
+    console.log(this.state.keyword)
     return (
       <>
-        <SearchTextInput onChange={this.handleText.bind(this)} />
-        <SearchSubmit onClick={this.handleSubmit.bind(this)} />
-        <h1>{this.state.url}</h1>
+        <div>
+          <h1>検索したいお菓子を入力してください</h1>
+          <SearchTextInput onChange={this.handleText.bind(this)} />
+          <SearchSubmit onClick={this.handleSubmit.bind(this)} />
+        </div>
         <ViewImages data={this.state.data} />
       </>
     )
@@ -41,11 +45,12 @@ class App extends React.Component {
 
   handleText (event) {
     const key = '&keyword=' + event.target.value
-    this.setState({ url: this.url + key })
+    this.setState({ url: this.url + key, keyword: event.target.value })
   }
 
   handleSubmit () {
     const key = '&keyword=' + this.state.keyword
+
     this.componentDidMount()
   }
 }
@@ -55,14 +60,25 @@ const SearchTextInput = props => {
 }
 
 const SearchSubmit = props => {
-  return <button onClick={props.onClick}>検索</button>
+  return (
+    <Button
+      onClick={props.onClick}
+      variant='outlined'
+      href='#text-buttons'
+      color='primary'
+    >
+      検索
+    </Button>
+  )
 }
 
 const ViewImages = props => {
   return (
     <>
       {props.data.map((v, i) => (
-        <img src={v.image} />
+        <a href={v.url} key={i}>
+          <img src={v.image} />
+        </a>
       ))}
     </>
   )
